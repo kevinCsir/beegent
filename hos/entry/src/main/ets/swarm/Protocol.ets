@@ -98,7 +98,7 @@ export function endpointOf(input: string): string {
   if (!value.includes('://')) { value = 'ws://' + value; }
   const match = /^(wss?):\/\/(\[[0-9a-fA-F:]+\]|[a-zA-Z0-9.-]+)(?::([0-9]+))?(\/[^\s?#]*)?$/.exec(value);
   if (match === null) { throw new Error('请输入电脑 IP、IP:端口或完整 ws://地址/ws'); }
-  const port = match[3] ? Number(match[3]) : 19000;
+  const port = match[3] ? Number(match[3]) : 29000;
   if (port < 1 || port > 65535) { throw new Error('端口必须为 1–65535'); }
   return match[1] + '://' + match[2].toLowerCase() + ':' + port.toString() + (match[4] || '/ws');
 }
@@ -120,7 +120,7 @@ export interface MessageUpdates { query?: string; }
 
 
 
-export function downloadOriginOf(endpoint: string, port: number = 5173): string {
+export function downloadOriginOf(endpoint: string, port: number = 25173): string {
   const match = /^(wss?):\/\/(\[[0-9a-fA-F:]+\]|[a-zA-Z0-9.-]+)(?::[0-9]+)?(?:\/.*)?$/.exec(endpoint);
   if (!match) { throw new Error('服务器地址无效'); }
   return (match[1] === 'wss' ? 'https://' : 'http://') + match[2] + ':' + port.toString();
@@ -145,8 +145,8 @@ export class ConnectionSettings {
       throw new Error('请输入电脑的 IPv4 地址，例如 192.168.43.217');
     }
     this.ip = parts.map((part: string) => Number(part).toString()).join('.');
-    this.webPort = connectionPort(webPort, 19000, '后端端口');
-    this.downloadPort = connectionPort(downloadPort, 5173, '下载端口');
+    this.webPort = connectionPort(webPort, 29000, '后端端口');
+    this.downloadPort = connectionPort(downloadPort, 25173, '下载端口');
     this.endpoint = endpointOf(this.ip + ':' + this.webPort.toString());
     this.downloadOrigin = downloadOriginOf(this.endpoint, this.downloadPort);
   }

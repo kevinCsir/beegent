@@ -32,7 +32,7 @@ class Fake {
   reply(req, payload = {}, ok = true) { this.onText(JSON.stringify({ type: 'res', id: req.id, ok, payload, error: ok ? undefined : 'denied' })); }
 }
 async function run() {
-  assert.equal(endpointOf('192.168.1.10'), 'ws://192.168.1.10:19000/ws');
+  assert.equal(endpointOf('192.168.1.10'), 'ws://192.168.1.10:29000/ws');
   assert.equal(endpointOf('wss://EXAMPLE.COM:443/ws'), 'wss://example.com:443/ws');
   assert.throws(() => endpointOf('ws://127.0.0.1:99999'));
   assert.throws(() => decodeFrame('null'));

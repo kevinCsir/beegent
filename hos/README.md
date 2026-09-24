@@ -51,13 +51,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\build.ps1
 
 ## 连接 Swarm
 
-电脑同时启动 Swarm 后端和下载 HTTP 服务（`jiuwenswarm-start all`）。
-手机填写服务器 IPv4 地址，后端端口留空默认 19000，下载端口留空默认 5173。
-两个服务都需要监听 0.0.0.0，并允许局域网访问这两个端口。
+默认通过 [WorkSwarm 局域网转发 Skill](../swarm/beegent-lan-relay.md) 连接桌面版：消息端口 `29000`，下载端口 `25173`。
+手机填写电脑局域网 IPv4 地址，后端端口留空默认 29000，下载端口留空默认 25173。
+转发进程默认监听 0.0.0.0，并将这两个端口分别转发到本机后端 19000 和下载服务 5173；需要允许局域网访问转发端口。
 连接参数仅保留在本次运行内存中，不写入本地配置；测试默认 IP 在
 `entry/src/main/ets/config/AppConfig.ets`。
 
-启动示例（先在原终端用 Ctrl+C 停止旧的 app 服务，避免端口占用）：
+如果直接连接源码后端、不使用转发，则需在手机手动填写实际端口（以下示例为 19000 / 5173），并让两个服务都监听 0.0.0.0。启动示例（先在原终端用 Ctrl+C 停止旧的 app 服务，避免端口占用）：
 
 ```powershell
 Set-Location 'C:\kevin\code\OpenJiuWen\jiuwenswarm'
