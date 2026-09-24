@@ -88,6 +88,6 @@ async function main() {
   const first=loaded.find(n=>idOf(n).startsWith('remote-session-')&&idOf(n)!=='remote-session-list'); click(first);
   await waitFor(list=>!!find(list,'message-list'),'history',30000);
   await sleep(700); capture(); fs.copyFileSync(path.join(out,'screen.png'),path.join(out,'history.png'));
-  console.log('PASS Beegent connection dialog, real LAN connection, server session sidebar and history display; no chat sent');
+  console.log('PASS beegent connection dialog, real LAN connection, server session sidebar and history display; no chat sent');
 }
 main().catch(error=>{try{capture();}catch(_){} console.error(error.message);process.exitCode=1;});

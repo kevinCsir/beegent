@@ -1,10 +1,11 @@
-# Beegent
+# beegent
 
 JiuwenSwarm 的原生移动客户端。
 
 ```text
 hos/       HarmonyOS 客户端（ArkTS + ArkUI）
-android/   Android 客户端（待迁移）
+android/   Android 预留目录（仅占位说明，尚未实现）
+swarm/     给 WorkSwarm 使用的局域网转发 Skill 与单文件文档
 ```
 
 ## HarmonyOS
@@ -18,8 +19,36 @@ android/   Android 客户端（待迁移）
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\hos\scripts\build.ps1
 ```
 
+历史会话读取兼容页码和游标两套协议，详见 [历史分页兼容](hos/docs/history-pagination.md)。
+
+## WorkSwarm 桌面版局域网连接
+
+桌面版后端仅监听本机时，可让 WorkSwarm 根据本仓库提供的 Skill 启动 TCP 转发，再用手机连接电脑的局域网 IP。无需修改 Swarm 代码或模型配置。
+
+- [单文件 Markdown](swarm/beegent-lan-relay.md)：包含说明和全部脚本，可直接发给 WorkSwarm 按说明保存、启动。
+- [多文件 Skill](swarm/beegent-lan-relay/)：`SKILL.md` 与 `scripts/lan_relay.cjs`，适合整体复制或打包分发。
+
+两种交付形式使用同一个 Node 脚本，支持 Windows、Linux、macOS。优先使用桌面版随附的 Node，需要 Node.js 18+；不依赖 Python 或 npm 包。
+
+| 手机配置 | 默认转发目标 |
+| --- | --- |
+| 电脑局域网 IP，消息端口 `29000` | `127.0.0.1:19000` |
+| 电脑局域网 IP，下载端口 `25173` | `127.0.0.1:5173` |
+
+转发默认监听 `0.0.0.0`，手机应填写电脑实际 IP。桌面版可能自动更换后端端口，启动前需确认；转发脚本提供 `start`、`status`、`stop`，详情见 Skill。转发就绪不代表手机连通或后端业务正常。
+
+### 维护与生成
+
+以 `swarm/beegent-lan-relay/SKILL.md` 和 `swarm/beegent-lan-relay/scripts/lan_relay.cjs` 为维护源。修改后，在仓库根目录运行：
+
+```shell
+node swarm/build-single-file.cjs
+```
+
+该命令仅生成 `swarm/beegent-lan-relay.md`，不会启动转发或执行测试。提交时将维护源和生成的单文件文档一起提交，避免两种版本不同步。运行状态及连接日志保存到用户目录，不纳入仓库。
+
 ## Android
 
-目录已预留，尚未创建 Android 工程，见 [Android 迁移说明](android/README.md)。
+目录已预留，当前提交中仅包含占位说明，尚未创建 Android 工程，见 [Android 迁移说明](android/README.md)。
 
 本仓库不包含本机调试签名、模型密钥、依赖目录或构建产物。

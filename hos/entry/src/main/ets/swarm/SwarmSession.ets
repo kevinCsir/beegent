@@ -1,4 +1,4 @@
-import { HistoryRecord, historyKey } from './HistoryClient';
+import { HistoryContinuation, HistoryRecord, historyKey } from './HistoryClient';
 import { Subagents } from './Subagents';
 import { isUsageEvent } from './UsageStore';
 import { Frame, Payload, RunState, downloadOriginOf } from './Protocol';
@@ -30,7 +30,7 @@ export class SwarmSession {
   messages: ChatMessage[] = [];
   historyRows: ChatMessage[] = [];
   historyRecords: HistoryRecord[] = [];
-  historyCursor: string | null = null;
+  historyCursor: HistoryContinuation | null = null;
   historySnapshot: string = ''; historySnapshotEnd: number = 0;
   historyLoading: boolean = false; historyLoaded: boolean = false; historyRevision: number = 0;
   liveRevision: number = 0;
@@ -239,5 +239,4 @@ export class SwarmSession {
   }
   private add(row: ChatMessage): void { this.rows.set(row.id, row); this.messages.push(row); this.onMessage(row); }
 }
-
 

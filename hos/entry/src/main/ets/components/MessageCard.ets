@@ -110,7 +110,7 @@ export struct MessageCard {
   build() {
     Column({ space: 6 }) {
       if (this.message.showHeader) {
-        Text(this.message.role === 'user' ? '你' : this.message.kind === 'notice' ? '收到消息' : 'Beegent')
+        Text(this.message.role === 'user' ? '你' : this.message.kind === 'notice' ? '收到消息' : 'beegent')
           .fontSize(11).fontWeight(FontWeight.Medium).fontColor(Palette.muted).width('100%')
       }
       if (this.message.kind === 'subagent' && this.message.subagent) {

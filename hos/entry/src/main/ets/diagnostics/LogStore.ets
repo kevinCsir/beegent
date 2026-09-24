@@ -121,7 +121,7 @@ export class LogStore {
     });
   }
   static async export(context: common.UIAbilityContext): Promise<string> {
-    const filename = 'Beegent-communication-' + new Date().toISOString().replace(/[:.]/g, '-') + '.jsonl';
+    const filename = 'beegent-communication-' + new Date().toISOString().replace(/[:.]/g, '-') + '.jsonl';
     const destinations = await new picker.DocumentViewPicker(context).save({ newFileNames: [filename] });
     if (!destinations.length) { return '已取消导出'; }
     await LogStore.flush();

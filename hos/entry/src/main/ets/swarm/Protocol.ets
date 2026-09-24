@@ -2,7 +2,7 @@ import { SubagentWire } from './Subagents';
 import { Answer, Question, EvolutionMeta, FlowMeta, PlanAction, FileWire, ToolWire, TodoWire } from './RichMessage';
 // Wire types intentionally preserve the original payload for future message renderers.
 export interface Params {
-  limit?: number; offset?: number; cursor?: string | null;
+  limit?: number; offset?: number; cursor?: string | null; page_idx?: number;
   session_id?: string;
   mode?: string;
   content?: string;

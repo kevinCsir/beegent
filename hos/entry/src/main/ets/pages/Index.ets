@@ -42,7 +42,7 @@ struct Index {
   @State listMore: boolean = false;
   @State historyLoading: boolean = false;
   @State historyMore: boolean = false;
-  @State title: string = 'Beegent';
+  @State title: string = 'beegent';
   @State error: string = '';
   @State globalNotice: string = '';
   @State activeId: string = '';
@@ -90,7 +90,7 @@ struct Index {
     const todoKey = (session?.viewId || 0).toString() + ':' + (session?.todosVersion || 0).toString();
     if (todoKey !== this.todoKey) { this.todoKey = todoKey; this.todos = session?.todos.slice() || []; }
     const binding = this.manager.endpoint + '|' + (session?.id || '') + '|' + (session?.viewId || 0).toString() + '|' + (session?.historyRevision || 0).toString();
-    this.title = session?.title || 'Beegent';
+    this.title = session?.title || 'beegent';
     this.historyLoading = session?.historyLoading || false; this.historyMore = !!session?.historyCursor;
     this.remote = this.sidebar && this.connection === 'open' ? this.manager.remoteSessions.slice() : [];
     this.listLoading = this.manager.listLoading; this.listError = this.manager.listError;
@@ -326,7 +326,7 @@ struct Index {
     Column({ space: 16 }) {
       Row() {
         Image($r('app.media.beegent_icon')).width(34).height(34).borderRadius(10)
-        Text('Beegent').fontSize(22).fontWeight(FontWeight.Medium).layoutWeight(1).margin({ left: 10 })
+        Text('beegent').fontSize(22).fontWeight(FontWeight.Medium).layoutWeight(1).margin({ left: 10 })
         Button('×').fontSize(24).width(36).height(36).fontColor(Palette.ink).backgroundColor(Palette.honey).onClick(() => { this.closeSidebar(); })
       }.width('100%')
       Button(this.connection === 'open' ? '● 已连接  ›' : '○ 未连接  ›').alignSelf(ItemAlign.Start)
@@ -366,7 +366,7 @@ struct Index {
         }.layoutWeight(1).width('100%').scrollBar(BarState.Off).id('remote-session-list')
       }
       Button('通信日志').fontSize(13).fontColor(Palette.ink).backgroundColor(Palette.honey).height(34).onClick(() => this.openLogs()).id('communication-logs')
-      Text('Beegent  ·  随时连接，随处行动').fontSize(11).fontColor(Palette.muted).padding({ top: 16, bottom: 12 })
+      Text('beegent  ·  随时连接，随处行动').fontSize(11).fontColor(Palette.muted).padding({ top: 16, bottom: 12 })
     }.width('84%').height('100%').padding({ left: 20, right: 20, top: 24, bottom: 12 })
       .backgroundColor(Palette.background).alignItems(HorizontalAlign.Start).onClick(() => {}).id('session-drawer')
   }

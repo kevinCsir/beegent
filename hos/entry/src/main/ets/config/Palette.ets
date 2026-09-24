@@ -1,4 +1,4 @@
-// Beegent: white canvas, charcoal text, honey actions and cream disabled controls.
+// beegent: white canvas, charcoal text, honey actions and cream disabled controls.
 export class Palette {
   static readonly background: string = '#FFFFFF';
   static readonly surface: string = '#FFFFFF';
