@@ -1,0 +1,31 @@
+const assert = require('node:assert/strict');
+const {load} = require('./core.test.cjs');
+const {SwarmSession} = load('SwarmSession');
+const {SwarmManager} = load('SwarmManager');
+const s = new SwarmSession('parent','ws://local:19000/ws','test');
+s.begin('turn','test');
+const emit=(event,p)=>s.apply({type:'event',event,payload:{session_id:'parent',parent_session_id:'parent',...p}});
+const status=(id,revision,state,extra={})=>emit('chat.subtask_update',{subagent_id:id,revision,updated_at:revision,status:state,...extra});
+const activity=(id,seq,extra={})=>emit('chat.subagent_activity',{subagent_id:id,task_id:'task1',seq,at_ms:seq,kind:'thinking',summary:'step '+seq,...extra});
+activity('a',2); status('a',1,'running',{display_name:'调研',task_description:'查资料'}); status('b',1,'running',{display_name:'分析'});
+activity('a',1); activity('a',2); activity('b',1);
+s.subagents.flush();
+const cards=s.messages.filter(m=>m.kind==='subagent'); assert.equal(cards.length,2);
+const a=cards[0].subagent,b=cards[1].subagent;
+assert.deepEqual(a.activities.map(x=>x.sequence),[1,2]); assert.equal(b.activities.length,1); assert.equal(a.name,'调研');
+status('a',3,'idle',{lifecycle:'live',turn_outcome:'completed',can_send_input:true});
+status('a',2,'running'); activity('a',3); assert.match(a.status,/空闲.*已完成/); assert.equal(a.running,false,'late activity cannot reopen completed agent');
+status('a',4,'running',{task_description:'第二轮'}); activity('a',1,{task_id:'task2',at_ms:10}); assert.equal(a.activities.length,4); assert.equal(a.task,'第二轮');
+status('a',5,'closed',{closed_reason:'failed'}); assert.match(a.status,/关闭.*失败/);
+for(let i=4;i<210;i++) activity('b',i); assert.equal(b.activities.length,200); assert.ok(b.omitted>0);
+s.disconnected(); assert.equal(b.status,'状态待确认'); assert.match(a.status,/关闭/);
+const other=new SwarmSession('other','ws://local:19000/ws','test'); other.apply({type:'event',event:'chat.subtask_update',payload:{parent_session_id:'parent',subagent_id:'a',status:'running'}}); assert.equal(other.messages.filter(m=>m.kind==='subagent').length,0);
+// Parent-only routing uses the same socket and cannot alter the main task lifecycle.
+const wire={onText:()=>{},onClosed:()=>{},open:async()=>{},send:async()=>{},close:()=>{}};
+const manager=new SwarmManager(()=>wire);
+manager.endpoint=s.endpoint; manager.sessions.push(s); manager.byId.set(s.endpoint+'|parent',s);
+manager.connection.onEvent({type:'event',event:'chat.subtask_update',payload:{parent_session_id:'parent',subagent_id:'c',revision:1,status:'running'}});
+assert.equal(s.messages.filter(m=>m.kind==='subagent').length,3); assert.equal(manager.globalNotice,'');
+s.subagents.flush(); other.subagents.flush();
+console.log('PASS subagent routing, parallel agents, ordering, duplicate/late events, follow-up task, bounded activities and disconnect');
+

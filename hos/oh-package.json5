@@ -1,0 +1,7 @@
+{
+  "modelVersion": "6.1.0",
+  "name": "jiuwenbridge",
+  "version": "0.1.0",
+  "description": "HarmonyOS LAN chat client for JiuwenSwarm",
+  "dependencies": {}
+}

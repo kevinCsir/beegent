@@ -1,0 +1,16 @@
+.idea/
+.hvigor/
+oh_modules/
+node_modules/
+**/build/
+local.properties
+*.p12
+*.p7b
+*.cer
+*.keystore
+.env*
+signing.local.json
+
+
+# Local IDE signing configuration; commit only the template.
+/build-profile.json5

@@ -1,0 +1,28 @@
+# Local dependencies, IDE state and build outputs
+.idea/
+.hvigor/
+.gradle/
+.kotlin/
+.cxx/
+oh_modules/
+node_modules/
+**/build/
+local.properties
+
+# Device signing and local secrets
+/hos/build-profile.json5
+*.p12
+*.p7b
+*.cer
+*.keystore
+*.jks
+*.key
+*.pem
+.env*
+signing.local.json
+keystore.properties
+key.properties
+
+# OS files
+.DS_Store
+Thumbs.db
